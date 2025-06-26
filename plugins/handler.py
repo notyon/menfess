@@ -94,6 +94,9 @@ async def on_message(client: Client, msg: Message):
                     await gagal_kirim_handler(client, msg)
             else:
                 await gagal_kirim_handler(client, msg)
+                
+async def gagal_kirim_handler(client, msg):
+    await msg.reply("🚫 Kamu tidak diizinkan mengakses fitur ini. Harap hubungi admin jika kamu merasa ini kesalahan.")
 
 # Handler callback tombol
 @Bot.on_callback_query()
