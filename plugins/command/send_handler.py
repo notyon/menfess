@@ -7,8 +7,7 @@ from plugins import Database, Helper
 async def send_menfess_handler(client, msg):
     db = Database(msg.from_user.id)
     if not await db.is_member():
-        return await msg.reply("🚫 KAMU BELUM TERDAFTAR SEBAGAI MEMBER.
-UNTUK MENGIRIM PESAN KAMU HARUS MENGHUBUNGI ADMIN UNTUK MENDAFTAR SEBAGAI MEMBER (Biaya Rp.2000)")
+        return await msg.reply("🚫 KAMU BELUM TERDAFTAR SEBAGAI MEMBER. UNTUK MENGIRIM PESAN KAMU HARUS MENGHUBUNGI ADMIN UNTUK MENDAFTAR SEBAGAI MEMBER (Biaya Rp.2000)")
 
     helper = Helper(client, msg)
     db = Database(msg.from_user.id)
