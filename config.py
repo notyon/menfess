@@ -18,7 +18,7 @@ channel_log = int(os.getenv("CHANNEL_LOG", "-1001634100538"))
 # =========================================================== #
 
 id_admin = int(os.getenv("ID_ADMIN", "732448606"))
-admin = int(os.getenv("ADMIN", "732448606"))
+admin = [732448606]  # Ganti 7316811520 dengan ID Telegram kamu (sebagai admin)
 # =========================================================== #
 
 batas_kirim = int(os.getenv("BATAS_KIRIM", "2"))
