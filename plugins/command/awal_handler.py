@@ -1,22 +1,29 @@
-
 import config
-
-from pyrogram import Client, types, enums
+from pyrogram import Client, types
 from plugins import Helper, Database
 
-non_member_msg = "❌ Kamu belum terdaftar sebagai member.\nSilakan hubungi admin untuk mendaftar. Biaya: Rp 2000"
+non_member_msg = (
+    "❌ Kamu belum terdaftar sebagai member.\n"
+    "Silakan hubungi admin untuk mendaftar. Biaya: Rp 2000"
+)
+
+# Fungsi bantu cek apakah user terdaftar (member atau admin)
+async def is_terdaftar(db: Database):
+    data = db.get_data_pelanggan()
+    return data.status in ["member", "admin"]
 
 async def start_handler(client: Client, msg: types.Message):
     db = Database(msg.from_user.id)
     await db.tambah_databot()
-    if not await db.is_member():
+
+    if not await is_terdaftar(db):
         await msg.reply_text(non_member_msg)
         return
 
     helper = Helper(client, msg)
-    first = msg.from_user.first_name
-    last = msg.from_user.last_name
-    fullname = first if not last else first + ' ' + last
+    first = msg.from_user.first_name or ""
+    last = msg.from_user.last_name or ""
+    fullname = first + " " + last if last else first
     username = '@' + msg.from_user.username if msg.from_user.username else 'Tidak ada'
     mention = msg.from_user.mention
 
@@ -34,32 +41,17 @@ async def start_handler(client: Client, msg: types.Message):
 
 async def status_handler(client: Client, msg: types.Message):
     db = Database(msg.from_user.id)
-    if not await db.is_member():
-        await msg.reply_text(non_member_msg)
-        return
-    await msg.reply_text(config.status_msg)
-
-async def help_handler(client: Client, msg: types.Message):
-    db = Database(msg.from_user.id)
-    if not await db.is_member():
-        await msg.reply_text(non_member_msg)
-        return
-    await msg.reply_text(config.help_msg)
-
-
-async def help_handler(client: Client, msg: types.Message):
-    db = Database(msg.from_user.id)
-    if not await db.is_member():
-        await msg.reply_text(non_member_msg)
-        return
-
-    await msg.reply_text(config.help_msg)
-
-async def status_handler(client: Client, msg: types.Message):
-    db = Database(msg.from_user.id)
-    if not await db.is_member():
+    if not await is_terdaftar(db):
         await msg.reply_text(non_member_msg)
         return
 
     helper = Helper(client, msg)
     await helper.status_bot()
+
+async def help_handler(client: Client, msg: types.Message):
+    db = Database(msg.from_user.id)
+    if not await is_terdaftar(db):
+        await msg.reply_text(non_member_msg)
+        return
+
+    await msg.reply_text(config.help_msg)
