@@ -9,7 +9,7 @@ bot_token = os.getenv("BOT_TOKEN", "")
 # =========================================================== #
 
 db_url = os.getenv("DB_URL", "mongodb+srv://ucik:ucik@cluster0.0l3r8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-db_name = os.getenv("DB_NAME", "jdjfnansn") #bisa diganti sesuai kebutuhan
+db_name = os.getenv("DB_NAME", "jdjfna7nsn") #bisa diganti sesuai kebutuhan
 # =========================================================== #
 
 channel_1 = int(os.getenv("CHANNEL_1", "-1001809070827"))
