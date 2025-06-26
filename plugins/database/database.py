@@ -12,7 +12,7 @@ mycol = mydb['user']
 class Database():
     async def is_member(self):
         data = mycol.find_one({'_id': self.user_id})
-        return data and data.get('status') == 'member'
+        return data and data.get('status') in ["member", "admin"]
 
     async def add_member(self):
         mycol.update_one({'_id': self.user_id}, {'$set': {'status': 'member'}}, upsert=True)
