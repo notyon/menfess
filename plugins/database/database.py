@@ -23,18 +23,16 @@ class Database():
     async def tambah_databot(self):
         user = mycol.find_one({"_id": self.user_id})
 
-        import config  # Pastikan config.admin ada
+        import config
 
-        # 🔁 Jika user sudah ada dan seharusnya admin tapi belum admin → update
         if user:
+        # Jika admin tapi status belum benar, perbaiki
             if self.user_id in config.admin and user.get("status") != "admin":
-                print("🔄 Update status jadi admin:", self.user_id)
                 mycol.update_one({"_id": self.user_id}, {"$set": {"status": "admin"}})
             return
 
-        # 🆕 User baru → set status
-        status = "admin" if self.user_id in config.admin else "member"
-        print("✅ Tambah user baru:", self.user_id, "Status:", status)
+    # User baru: admin atau non-member
+        status = "admin" if self.user_id in config.admin else "non-member"
 
         data = {
             "_id": self.user_id,
@@ -51,7 +49,7 @@ class Database():
                 "photo": True,
                 "video": False,
                 "voice": False
-             }
+            }
         }
         await self.tambah_pelanggan(data)
 
