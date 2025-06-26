@@ -21,21 +21,29 @@ class Database():
         mycol.update_one({'_id': self.user_id}, {'$set': {'status': 'non-member'}}, upsert=True)
 
     async def tambah_databot(self):
-        if mycol.find_one({"_id": self.user_id}):
-            print("🛑 USER SUDAH ADA DI DB:", self.user_id)
+        user = mycol.find_one({"_id": self.user_id})
+
+        import config  # Pastikan config.admin ada
+
+        # 🔁 Jika user sudah ada dan seharusnya admin tapi belum admin → update
+        if user:
+            if self.user_id in config.admin and user.get("status") != "admin":
+                print("🔄 Update status jadi admin:", self.user_id)
+                mycol.update_one({"_id": self.user_id}, {"$set": {"status": "admin"}})
             return
 
-        import config
-        print("✅ USER BARU:", self.user_id)
-        print("🔍 ADMIN:", config.admin)
-
-        status = "member" if self.user_id in config.admin else "admin"
-        print("📌 STATUS DITENTUKAN:", status)
+        # 🆕 User baru → set status
+        status = "admin" if self.user_id in config.admin else "member"
+        print("✅ Tambah user baru:", self.user_id, "Status:", status)
 
         data = {
             "_id": self.user_id,
+            "nama": "Pengguna",
             "status": status,
+            "coin": f"0_{self.user_id}",
             "menfess": 0,
+            "all_menfess": 0,
+            "sign_up": True,
             "bot_status": True,
             "ban": {},
             "admin": [],
@@ -43,7 +51,7 @@ class Database():
                 "photo": True,
                 "video": False,
                 "voice": False
-            }
+             }
         }
         await self.tambah_pelanggan(data)
 
