@@ -40,19 +40,22 @@ class Database():
         self.user_id = user_id
 
     async def tambah_databot(self):
-        data = {
-            "_id": self.user_id,
-            "menfess": 0,
-            "bot_status": True,
-            "ban": {},
-            "admin": [],
-            "kirimchannel": {
-                "photo": True,
-                "video": False,
-                "voice": False
-            }
+        if mycol.find_one({"_id": self.user_id}):
+            return  # user sudah ada, lewati insert
+    data = {
+        "_id": self.user_id,
+        "status": "non-member",
+        "menfess": 0,
+        "bot_status": True,
+        "ban": {},
+        "admin": [],
+        "kirimchannel": {
+            "photo": True,
+            "video": False,
+            "voice": False
         }
-        await self.tambah_pelanggan(data)
+    }
+    await self.tambah_pelanggan(data)
 
     async def cek_user_didatabase(self):
         found = mycol.find_one({'_id': self.user_id})
