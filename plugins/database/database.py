@@ -22,10 +22,15 @@ class Database():
 
     async def tambah_databot(self):
         if mycol.find_one({"_id": self.user_id}):
+            print("🛑 USER SUDAH ADA DI DB:", self.user_id)
             return
 
-        import config  # pastikan config.py berisi admin = [user_id]
+        import config
+        print("✅ USER BARU:", self.user_id)
+        print("🔍 ADMIN:", config.admin)
+
         status = "member" if self.user_id in config.admin else "non-member"
+        print("📌 STATUS DITENTUKAN:", status)
 
         data = {
             "_id": self.user_id,
