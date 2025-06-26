@@ -13,7 +13,7 @@ db_name = os.getenv("DB_NAME", "menfessztest") #bisa diganti sesuai kebutuhan
 # =========================================================== #
 
 channel_1 = int(os.getenv("CHANNEL_1", "-1001809070827"))
-channel_2 = int(os.getenv("CHANNEL_2", "-1002393756718")) #untuk group comentar user
+channel_2 = int(os.getenv("CHANNEL_2", "-1001841428029")) #untuk group comentar user
 channel_log = int(os.getenv("CHANNEL_LOG", "-1001634100538"))
 # =========================================================== #
 
