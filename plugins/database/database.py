@@ -23,8 +23,6 @@ class Database():
 
     async def tambah_databot(self):
         user = mycol.find_one({"_id": self.user_id})
-        import config
-
         if user:
             # Jika admin tapi status belum benar, perbaiki
             if self.user_id in config.admin and user.get("status") != "admin":
@@ -56,6 +54,9 @@ class Database():
     async def tambah_pelanggan(self, data):
         mycol.insert_one(data)
 
+    async def cek_user_didatabase(self):
+        return mycol.find_one({"_id": self.user_id}) is not None
+
     def get_data_pelanggan(self):
         found = mycol.find_one({'_id': self.user_id})
         return data_pelanggan(found)
@@ -76,18 +77,3 @@ class data_pelanggan():
 
     def __str__(self) -> str:
         return str(json.dumps(self.json, indent=3))
-
-# Handler untuk command /status
-from pyrogram import Client, filters, types
-
-@Client.on_message(filters.command("status") & filters.private)
-async def status_handler(client: Client, msg: types.Message):
-    db = Database(msg.from_user.id)
-    await db.tambah_databot()
-
-    data = db.get_data_pelanggan()
-    if data.status not in ["member", "admin"]:
-        return await msg.reply("❌ Kamu belum terdaftar sebagai member.\nSilakan hubungi admin untuk mendaftar.")
-
-    await msg.reply(f"🔍 Status: {data.status}\n🪙 Coin: {data.coin}\n📮 Menfess: {data.menfess}")
-    
