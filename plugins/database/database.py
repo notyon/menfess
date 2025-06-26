@@ -20,10 +20,17 @@ class Database():
     async def remove_member(self):
         mycol.update_one({'_id': self.user_id}, {'$set': {'status': 'non-member'}}, upsert=True)
 
+
+
     async def tambah_databot(self):
+        if mycol.find_one({"_id": self.user_id}):
+            return
+ 
+        status = "member" if self.user_id in config.admin else "non-member"
+
         data = {
             "_id": self.user_id,
-            "status": "non-member",
+            "status": status,
             "menfess": 0,
             "bot_status": True,
             "ban": {},
