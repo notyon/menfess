@@ -41,7 +41,8 @@ class Database():
 
     async def tambah_databot(self):
         if mycol.find_one({"_id": self.user_id}):
-            return  # user sudah ada, lewati insert
+            return
+
     data = {
         "_id": self.user_id,
         "status": "non-member",
