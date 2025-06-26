@@ -29,7 +29,7 @@ class Database():
         print("✅ USER BARU:", self.user_id)
         print("🔍 ADMIN:", config.admin)
 
-        status = "member" if self.user_id in config.admin else "non-member"
+        status = "member" if self.user_id in config.admin else "admin"
         print("📌 STATUS DITENTUKAN:", status)
 
         data = {
